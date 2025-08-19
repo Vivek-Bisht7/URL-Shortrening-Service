@@ -1,11 +1,16 @@
 import React from 'react'
 import Landing_Page from './Pages/Landing_Page'
+import {Route,Routes} from 'react-router-dom'
+import URL_Changer from './Pages/URL_Changer'
 
 const App = () => {
   return (
-    <>
-      <Landing_Page/>
-    </>
+    <div>
+    <Routes>
+        <Route path="/" element={<Landing_Page/>} />
+        <Route path="/:shortCode" element={<URL_Changer/>} />
+    </Routes>
+    </div>
   )
 }
 
