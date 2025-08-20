@@ -2,24 +2,37 @@ const Database = require('../models/dbModel');
 
 const inputURL =async (req,res)=>{
     const longURL = req.body.longURL;
-    await Database.create({longURL});
-}
 
-const sendShortCode = async (req,res)=>{
-    const longURL = req.query.data;
-
-    const data = await Database.findOne({longURL});
-    res.send(data.shortCode);
+    if(!longURL){
+        return res.status(400).json({message:"Long URL is required"});
+    }
     
+    const found = await Database.findOne({longURL});
+
+    if(!found){
+        const data = await Database.create({longURL});
+        return res.send(data.shortCode);
+    }
+    else{
+        return res.send(found.shortCode);    
+    }
 }
 
 const urlChanger = async (req,res)=>{
     const {shortCode} = req.params;
 
-    const data = await Database.findOne({shortCode});
+    try{
+        const data = await Database.findOne({shortCode});
 
-    res.send(data.longURL);
-    
+        if(!data){
+            return res.status(404).json({message:"Invalid URL"});
+        }
+
+        res.send(data.longURL);
+    }
+    catch(err){
+        return res.status(400).json({message:err.message});
+    }    
 }
 
-module.exports = {inputURL,sendShortCode,urlChanger};
+module.exports = {inputURL,urlChanger};

@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
 
+require('dotenv').config();
+
+const cors = require('cors');
 app.use(cors());
 
 const dbConnection = require('./connection/db');
@@ -11,9 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 const routes = require('./routes/routes');
-app.use('/',routes);
+app.use('/api/shorty',routes);
 
-app.listen('3000' , ()=>{
+app.listen(process.env.PORT || 3000 , ()=>{
     console.log("Server has started running..");
-    
 })
