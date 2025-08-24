@@ -28,11 +28,38 @@ const urlChanger = async (req,res)=>{
             return res.status(404).json({message:"Invalid URL"});
         }
 
-        res.send(data.longURL);
+        try{
+            await Database.findOneAndUpdate({shortCode:shortCode},{$inc:{visits:1}},{new:true});
+        }
+        catch(err){
+            console.log(err.message);
+            
+        }
+
+            res.send(data.longURL);
     }
     catch(err){
         return res.status(400).json({message:err.message});
     }    
 }
 
-module.exports = {inputURL,urlChanger};
+const getViews = async (req,res)=>{
+    const {shortCode} = req.params;
+
+    if(!shortCode){
+        res.status(400).json({message:"Enter a valid short URL"});
+    }
+    
+
+    try{
+        const data = await Database.find({shortCode});
+        res.send(data[0].visits);
+    }
+    catch(e){
+        console.log(e.message);
+        
+    }
+    
+}
+
+module.exports = {inputURL,urlChanger,getViews};

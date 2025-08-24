@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const { type } = require('os');
 
 const schema = new mongoose.Schema({
     longURL : {
@@ -10,6 +11,10 @@ const schema = new mongoose.Schema({
         type : String,
         default : ()=> crypto.randomBytes(2).toString('hex'),
         unique:true,
+    },
+    visits : {
+        type : Number,
+        default : 0,
     }
 
 },

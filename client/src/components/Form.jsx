@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const Form =() => {
@@ -10,6 +10,7 @@ const Form =() => {
   const [hiddenStatus, sethiddenStatus] = useState(true);
   const [shortCode, setshortCode] = useState('');
   const [copyStatus, setcopyStatus] = useState("Copy")
+  const [views, setviews] = useState("hello");
 
   
   const submitHandler = async (e)=>{
@@ -96,7 +97,7 @@ const Form =() => {
             >
               {copyStatus}</button>
 
-              <button onClick={pseudoRefresh} type='button' className='bg-white h-9 w-30 text-1xl'>Genreate More</button>
+              <button onClick={pseudoRefresh} type='button' hidden={hiddenStatus} className='bg-white h-9 w-30 text-1xl'>Genreate More</button>
             </div>
 
         </form>
@@ -105,3 +106,26 @@ const Form =() => {
 }
 
 export default Form
+
+// try{
+//    useEffect(() => {
+//     axios.get(`http://localhost:3000/api/shorty/${shortCode}`)
+//     .then(function(res){
+//       setviews(res.data.visits);
+//     })
+//     .catch(function(err){
+//       console.log(err);
+      
+//     })
+//   }, [])
+//  }
+//  catch(err){
+//   console.log(err.message);
+  
+//  }
+  
+
+//   const countViews = ()=>{
+//     console.log(views);
+    
+//   }
